@@ -2,13 +2,20 @@
 
 namespace App;
 
+use App\QualityStrategy\QualityStrategyFactoryInterface;
+
 class GildedRose
 {
+    /** @var array */
     private $items;
 
-    public function __construct(array $items)
+    /** @var QualityStrategyFactoryInterface */
+    private $qualityStrategyFactory;
+
+    public function __construct(QualityStrategyFactoryInterface $qualityStrategyFactory, array $items)
     {
         $this->items = $items;
+        $this->qualityStrategyFactory = $qualityStrategyFactory;
     }
 
     public function getItem($which = null)
@@ -22,49 +29,9 @@ class GildedRose
     public function nextDay()
     {
         foreach ($this->items as $item) {
-            if ($item->name != 'Aged Brie' and $item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                if ($item->quality > 0) {
-                    if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                        $item->quality = $item->quality - 1;
-                    }
-                }
-            } else {
-                if ($item->quality < 50) {
-                    $item->quality = $item->quality + 1;
-                    if ($item->name == 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->sellIn < 11) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                        if ($item->sellIn < 6) {
-                            if ($item->quality < 50) {
-                                $item->quality = $item->quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
-            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                $item->sellIn = $item->sellIn - 1;
-            }
-            if ($item->sellIn < 0) {
-                if ($item->name != 'Aged Brie') {
-                    if ($item->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                        if ($item->quality > 0) {
-                            if ($item->name != 'Sulfuras, Hand of Ragnaros') {
-                                $item->quality = $item->quality - 1;
-                            }
-                        }
-                    } else {
-                        $item->quality = $item->quality - $item->quality;
-                    }
-                } else {
-                    if ($item->quality < 50) {
-                        $item->quality = $item->quality + 1;
-                    }
-                }
-            }
+            $strategy = $this->qualityStrategyFactory->getQualityStrategy($item);
+            $item->quality = $strategy->calculateNewQuality($item->sellIn, $item->quality);
+            $item->sellIn = $strategy->getNewSellIn($item->sellIn);
         }
     }
 }
