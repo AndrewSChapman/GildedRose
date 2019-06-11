@@ -1,57 +1,35 @@
 # The Elucidat 'Gilded Rose' Coding Test
 
-## The task
+This is my implementation of the Gilded Rose challenge.  A few notes:
 
-This repository includes the initial setup for a Gilded Rose kata.  It includes everything you need to get up and running, including a large suite of tests.  The purpose of this task is to put you in the position of having some old, ugly, legacy code and seeing whay you could do with it, all of the while making any of your changes test-driven and ensuring everything continues to pass the tests (or any more tests you would write). 
+* I've added support for the new Conjured Items;
+* All tests are passing;
+* I made no change to the Items class or items property as instructed;
+* I rejected the suggestion to change to a static method for nextDay / and or a static property for the items array;
 
-Please follow the specifications below, refactoring as you see fit.  However, please keep the following in mind:
+Whilst it would have been possible to code a more complex solution, I've opted for simplicity.  
 
-- All the of tests are expected to pass
-- You will need to uncomment the tests for the new item type
-- Any new code you write should be covered by tests if it's not already
-- Keep good design principles in mind when you refactor the code
-- You only need to spend an hour or two on this
+In general I believe code should be only as complex as the business logic demands.  Simple code is easy 
+to read, easy to test and easy to maintain.   
 
-## Getting started
+I've implemented the solution using a strategy pattern, where the appropriate quality adjustment 
+strategy is selected based on the item being evaluated.
 
-Run:
+The outcome is that instead of having multiple levels of if/else logic which is difficult to
+reason about, there's now a simple strategy for each unique business rule combination.  Each strategy
+is very easy to follow.
 
-```
-composer update
-```
+I used a custom / dedicated strategy for the backstage pass because the backstage pass was sufficiently
+different from everything else to warrant it.  In the future if more products are added that are similar
+in nature to the backstage pass, I would suggest adding a more generic strategy to deal with them one the 
+shared logic is clear.
 
-to install the testing framework (we're using [Kahlan library](http://kahlan.readthedocs.org/en/latest/) here as it has a very easy-to-understand spec perfect for this small exercise), and to run the tests use:
+## A final note
 
-```
-./vendor/bin/kahlan
-```
+I noticed that the last requirement of the task
+"Sulfuras is a legendary item and as such its Quality is 80 and it never alters."
+is not implemented by the initial code or reflected in the test suite.  I have left the test suite 
+as it is, since it's unclear if this is a mistake in the original code or in the brief, however the
+static strategy could be easy changed to return a fixed value instead of the "current" value.
 
-## Specifications
-
-Hi and welcome to team Gilded Rose. As you know, we are a small inn with a prime location in a
-prominent city ran by a friendly innkeeper named Allison. We also buy and sell only the finest goods.
-
-Unfortunately, our goods are constantly degrading in quality as they approach their sell by date. We
-have a system in place that updates our inventory for us. It was developed by a no-nonsense type named Leeroy, who has moved on to new adventures. Your task is to add the new item to our system so that we can begin selling a new category of items. First an introduction to our system:
-
-- All items have a SellIn value which denotes the number of days we have to sell the item
-- All items have a Quality value which denotes how valuable the item is
-- At the end of each day our system lowers both values for every item
-
-Pretty simple, right? Well this is where it gets interesting:
-
-- Once the sell by date has passed, Quality degrades twice as fast
-- The Quality of an item is never negative
-- "Aged Brie" actually increases in Quality the older it gets
-- The Quality of an item is never more than 50
-- "Sulfuras", being a legendary item, never has to be sold or decreases in Quality
-- "Backstage passes", like aged brie, increases in Quality as its SellIn value approaches; Quality increases by 2 when there are 10 days or less and by 3 when there are 5 days or less but Quality drops to 0 after the concert
-
-We have recently signed a supplier of conjured items. This requires an update to our system:
-
-- "Conjured" items degrade in Quality twice as fast as normal items
-
-Feel free to make any changes to the `nextDay` method and add any new code as long as everything
-still works correctly. However, do not alter the `Item` class or `items` property as those belong to the goblin in the corner who will insta-rage you as he doesn't believe in shared code ownership (you can make the `nextDay` method and `items` property static if you like, we'll cover for you).
-
-Just for clarification, an item can never have its Quality increase above 50, however "Sulfuras" is a legendary item and as such its Quality is 80 and it never alters.
+Thanks for the opportunity to attempt this task :-)

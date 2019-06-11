@@ -11,14 +11,6 @@ namespace App\QualityStrategy;
  */
 final class StaticQualityStrategy implements QualityStrategyInterface
 {
-    /** @var int */
-    private $staticValue;
-
-    public function __construct(int $staticValue)
-    {
-        $this->staticValue = $staticValue;
-    }
-
     public function calculateNewQuality(int $sellInDays, int $currentQuality): int
     {
         return $currentQuality;

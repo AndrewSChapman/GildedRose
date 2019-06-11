@@ -30,7 +30,7 @@ final class QualityStrategyFactory implements QualityStrategyFactoryInterface
                 return new DeprecationQualityStrategy(self::STANDARD_QUALITY_CHANGE_RATE * 2);
 
             case ProductName::SULFURAS:
-                return new StaticQualityStrategy(80);
+                return new StaticQualityStrategy();
 
             default:
                 return new DeprecationQualityStrategy(self::STANDARD_QUALITY_CHANGE_RATE);
