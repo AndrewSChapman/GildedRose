@@ -1,4 +1,4 @@
-# The Elucidat 'Gilded Rose' Coding Test
+# The 'Gilded Rose' Coding Test
 
 This is my implementation of the Gilded Rose challenge.  A few notes:
 
